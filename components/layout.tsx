@@ -1,12 +1,10 @@
-import * as React from "react";
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from './layout.module.css'
-import utilStyles from '../styles/utils.module.css'
-import Link from 'next/link'
+import * as React from "react"
+import Head from "next/head"
+import styles from "components/layout.module.css"
+import utilStyles from "styles/utils.module.css"
 
-const name = '[Your Name]'
-export const siteTitle = 'Next.js Sample Website'
+const name = "[Your Name]"
+export const siteTitle = "Next.js Sample Website"
 
 export type LayoutProps = {
   children: React.ReactNode,
@@ -34,4 +32,4 @@ const Layout = ({ children, home }: LayoutProps) => {
     </div>
   )
 }
-export default Layout;
+export default Layout

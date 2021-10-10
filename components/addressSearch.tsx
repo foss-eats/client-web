@@ -1,6 +1,6 @@
-import React, { FC, useState } from "react";
-import { Input } from "@mui/material";
-import GoogleMapsAutocomplete from "react-google-autocomplete";
+import React, { FC } from "react"
+import { Input } from "@mui/material"
+import GoogleMapsAutocomplete from "react-google-autocomplete"
 
 const getPostalCode = ({ address_components = [] }: google.maps.places.PlaceResult): string | undefined => address_components
   .filter(({types}) => types.includes("postal_code"))

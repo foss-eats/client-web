@@ -1,14 +1,14 @@
 import * as React from "react"
-import Head from 'next/head'
-import { useRouter } from 'next/router'
+import Head from "next/head"
+import { useRouter } from "next/router"
 
-import Layout, { siteTitle } from '../components/layout'
-import utilStyles from '../styles/utils.module.css'
-import AddressSearch from "../components/addressSearch"
+import Layout, { siteTitle } from "components/layout"
+import utilStyles from "styles/utils.module.css"
+import AddressSearch from "components/addressSearch"
 
 
 export type HomeProps = {}
-export default ({}: HomeProps) => {
+const Home: React.FC<HomeProps> = ({}) => {
   const router = useRouter()
   return (
     <Layout home>
@@ -21,3 +21,4 @@ export default ({}: HomeProps) => {
     </Layout>
   )
 }
+export default Home

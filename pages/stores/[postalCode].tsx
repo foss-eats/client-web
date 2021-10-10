@@ -1,14 +1,13 @@
-import * as React from "react";
-import { GetStaticProps, GetStaticPaths } from 'next'
+import * as React from "react"
+import { GetServerSideProps } from "next"
 import { ParsedUrlQuery } from "querystring"
 
-import Layout from '../../components/layout'
-import { getAllStoreIds, getStoresForPostalCode, StoreHeader, storeHeaders } from '../../lib/store'
-import Head from 'next/head'
-import Date from '../../components/date'
-import utilStyles from '../../styles/utils.module.css'
-import Link from "next/link";
-import { prop, uniq } from "ramda";
+import Layout from "components/layout"
+import { getStoresForPostalCode, StoreHeader } from "lib/store"
+import Head from "next/head"
+import utilStyles from "styles/utils.module.css"
+import Link from "next/link"
+
 
 export type StoreProps = {
   postalCode?: string,
@@ -35,19 +34,10 @@ const StoreEntry: React.FC<StoreHeader> = ({ name, id }) => (
   </Link>
 )
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const stores = await storeHeaders()
-  return {
-    paths: uniq(stores.flatMap(prop("postalCodes")))
-      .map(postalCode => `/stores/${postalCode}`),
-    fallback: false
-  }
-}
-
 export interface StoreUrlParams extends ParsedUrlQuery {
   postalCode: string,
 }
-export const getStaticProps: GetStaticProps<StoreProps, StoreUrlParams> = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps<StoreProps, StoreUrlParams> = async ({ params }) => {
   if (!params) return { props: {} }
   return {
     props: {
