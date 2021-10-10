@@ -8,17 +8,21 @@
     "start": "next start"
   },
   "dependencies": {
-    "date-fns": "^2.11.1",
-    "gray-matter": "^4.0.2",
+    "@emotion/react": "^11.4.1",
+    "@emotion/styled": "^11.3.0",
+    "@mui/material": "^5.0.3",
+    "axios": "^0.22.0",
     "next": "^11.0.0",
+    "ramda": "^0.27.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "remark": "^12.0.0",
-    "remark-html": "^12.0.0"
+    "react-google-autocomplete": "^2.4.3"
   },
   "devDependencies": {
+    "@types/google.maps": "^3.45.6",
     "@types/node": "^16.10.3",
     "@types/react": "^17.0.27",
+    "@types/ramda": "^0.27.45",
     "typescript": "^4.4.3"
   }
 }
