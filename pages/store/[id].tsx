@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { GetServerSideProps } from "next"
 import { ParsedUrlQuery } from "querystring"
 
@@ -18,7 +18,7 @@ const Store = ({ store }: StoreProps) => {
         <title>{store.name}</title>
       </Head>
       <article>
-        
+        <h1>{store.name}</h1>
       </article>
     </Layout>
   )

@@ -6,26 +6,57 @@ export type StoreHeader = {
   name: string,
   postalCodes: string[]
 }
-export type StoreData = StoreHeader
+export type StoreData = StoreHeader & {
+  quisine: string[],
+  menu: MenuCategory[],
+}
+export type MenuCategory = {
+  id: string,
+  name: string,
+  items: MenuItem[],
+}
+export type MenuItem = {
+  id: string,
+  name: string,
+  price: string,
+  options: Record<string, MenuItemOption[]>,
+}
+export type MenuItemOption = MenuItemOptionToggle | MenuItemOptionChoice
+export type MenuItemOptionToggle = {
+  type: "toggle",
+  name: string,
+  price: string,
+}
+export type MenuItemOptionChoice = {
+  type: "choice",
+  name: string,
+  options: { name: string, price: string }[],
+}
 
 // TODO: move to backend and stuff
-const stores: StoreData[] = [
+const stores: StoreData[] = [1,2,3,4,5,6,7,8,9].flatMap(i => [
   {
-    id: "1",
-    name: "Pizzeria",
+    id: `${i * 3}`,
+    name: `Pizzeria ${i}`,
     postalCodes: ["28203"],
+    quisine: ["Pizza", "Italienisch"],
+    menu: [],
   },
   {
-    id: "2",
-    name: "Asia Laden",
+    id: `${i * 3 + 1}`,
+    name: `Asia Laden ${i}`,
     postalCodes: ["28203", "28204"],
+    quisine: ["Asiatisch", "Chinesisch"],
+    menu: [],
   },
   {
-    id: "3",
-    name: "Burger",
+    id: `${i * 3 + 2}`,
+    name: `Burger ${i}`,
     postalCodes: ["28204"],
+    quisine: ["Burger", "US Americanisch"],
+    menu: [],
   },
-]
+])
 
 export const storeHeaders = (): Promise<StoreHeader[]> =>
   Promise.resolve(stores.map(pick(["id", "name", "postalCodes"])))
