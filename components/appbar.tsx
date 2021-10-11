@@ -18,7 +18,7 @@ const AppBar: FC = () => {
   const handleClose = () => setAnchorEl(null)
 
   return (
-    <MuiAppBar position="static">
+    <MuiAppBar position="fixed">
       <Toolbar>
         <IconButton
           size="large"

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { FC } from "react"
 import { GetServerSideProps } from "next"
 import { useRouter } from "next/router"
 import Head from "next/head"
@@ -10,30 +10,34 @@ import ListItemText from "@mui/material/ListItemText"
 import ListItemAvatar from "@mui/material/ListItemAvatar"
 import ListItemButton from "@mui/material/ListItemButton"
 import Avatar from "@mui/material/Avatar"
-import Typography from "@mui/material/Typography"
 
 import Layout from "components/layout"
-import { getStoresForPostalCode, StoreHeader } from "lib/store"
+import { getStoresForPostalCode, StoreHeader, storeHeaders } from "lib/store"
 
 
 export type StoreProps = {
   postalCode?: string,
   stores?: StoreHeader[],
 }
-const Stores = ({ stores, postalCode }: StoreProps) => {
-  if (!stores) return <>No store found for postal code {postalCode}</>
-  return (
-    <Layout>
-      <Head>
-        <title>{postalCode}</title>
-      </Head>
-      <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
-        {stores.map((store, i) => <StoreEntry key={store.id} divider={i !== 0} {...store} />)}
-      </List>
-    </Layout>
-  )
-}
+const Stores = ({ stores, postalCode }: StoreProps) => (<>
+  <Head>
+    <title>{postalCode}</title>
+  </Head>
+  <Layout>
+    {stores
+      ? <StoreList stores={stores} />
+      : <>No store found for postal code {postalCode}</>
+    }
+  </Layout>
+</>)
 export default Stores
+
+
+const StoreList: FC<{ stores: StoreHeader[] }> = ({ stores }) => (
+  <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
+    {stores.map((store, i) => <StoreEntry key={store.id} divider={i !== 0} {...store} />)}
+  </List>
+)
 
 const StoreEntry: React.FC<StoreHeader & { divider: boolean }> = ({ name, id, divider }) => {
   const router = useRouter()

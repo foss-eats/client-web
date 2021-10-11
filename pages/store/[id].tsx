@@ -19,39 +19,35 @@ export type StoreProps = {
 }
 const Store = ({ store }: StoreProps) => {
   if (!store) return <>No store found</>
-  return (
-    <Layout>
-      <Head>
-        <title>{store.name}</title>
-      </Head>
-      <article>
-        <h1>{store.name}</h1>
-      </article>
-      <article>
-        <List
-          sx={{
-            width: '100%',
-            maxWidth: 360,
-            bgcolor: 'background.paper',
-            position: 'relative',
-            overflow: 'auto',
-            maxHeight: 300,
-            '& ul': { padding: 0 },
-          }}
-          subheader={<li />}
-        >
-          {store.menu.map(({ id, name, items }) => (
-            <li key={`section-${id}`}>
-              <ul>
-                <ListSubheader>{name}</ListSubheader>
-                {items.map((item) => <MenuItemEntry key={item.id} storeId={store.id} {...item} />)}
-              </ul>
-            </li>
-          ))}
-        </List>
-      </article>
+  return (<>
+    <Head>
+      <title>{store.name}</title>
+    </Head>
+    <Layout fullscreen>
+      <h1>{store.name}</h1>
+      <List
+        sx={{
+          width: '100%',
+          maxWidth: 360,
+          bgcolor: 'background.paper',
+          position: 'relative',
+          overflow: 'auto',
+          maxHeight: 300,
+          '& ul': { padding: 0 },
+        }}
+        subheader={<li />}
+      >
+        {store.menu.map(({ id, name, items }) => (
+          <li key={`section-${id}`}>
+            <ul>
+              <ListSubheader>{name}</ListSubheader>
+              {items.map((item) => <MenuItemEntry key={item.id} storeId={store.id} {...item} />)}
+            </ul>
+          </li>
+        ))}
+      </List>
     </Layout>
-  )
+  </>)
 }
 export default Store
 

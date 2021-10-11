@@ -48,6 +48,7 @@ type UseAutocomplete = [
   google.maps.places.AutocompletePrediction[],
   (input: string) => void,
   boolean,
+  () => void,
 ]
 type UseAutocompleteSettings = Omit<google.maps.places.AutocompletionRequest, "input">
 
@@ -66,10 +67,14 @@ export const useAutocomplete = (settings: UseAutocompleteSettings = {}): UseAuto
       setLoading(false)
     }
   }
+
+  const resetOptions = () => setOptions([])
+
   return [
     options,
     useCallback(debounce(autocomplete, DEBOUNCE_TIME), []),
     loading,
+    resetOptions,
   ]
 }
 

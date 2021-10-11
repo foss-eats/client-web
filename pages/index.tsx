@@ -1,6 +1,5 @@
 import React from "react"
 import { useRouter } from "next/router"
-import Head from "next/head"
 import Paper from "@mui/material/Paper"
 import Grid from "@mui/material/Grid"
 
