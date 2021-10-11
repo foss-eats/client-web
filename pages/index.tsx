@@ -1,9 +1,10 @@
 import React from "react"
-import Head from "next/head"
 import { useRouter } from "next/router"
+import Head from "next/head"
+import Paper from "@mui/material/Paper"
+import Grid from "@mui/material/Grid"
 
-import Layout, { siteTitle } from "components/layout"
-import utilStyles from "styles/utils.module.css"
+import Layout from "components/layout"
 import AddressSearch from "components/addressSearch"
 
 
@@ -12,12 +13,19 @@ const Home: React.FC<HomeProps> = ({}) => {
   const router = useRouter()
   return (
     <Layout home>
-      <Head>
-        <title>{siteTitle}</title>
-      </Head>
-      <section className={utilStyles.headingMd}>
-        <AddressSearch onSubmit={postalCode => router.push(`/stores/${postalCode}`)} />
-      </section>
+      <Grid
+        container
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        sx={{
+          minHeight: "30em",
+        }}
+      >
+        <Paper elevation={3}>
+          <AddressSearch onSubmit={postalCode => router.push(`/stores/${postalCode}`)} />
+        </Paper>
+      </Grid>
     </Layout>
   )
 }

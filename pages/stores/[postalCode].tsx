@@ -23,7 +23,7 @@ export type StoreProps = {
 const Stores = ({ stores, postalCode }: StoreProps) => {
   if (!stores) return <>No store found for postal code {postalCode}</>
   return (
-    <Layout home>
+    <Layout>
       <Head>
         <title>{postalCode}</title>
       </Head>
