@@ -11,6 +11,8 @@
   "dependencies": {
     "@mui/icons-material": "^5.0.3",
     "@mui/material": "^5.0.3",
+    "@rematch/core": "^2.1.0",
+    "decimal.js": "^10.3.1",
     "lodash.debounce": "^4.0.8",
     "next": "^11.0.0",
     "next-auth": "^3.29.0",

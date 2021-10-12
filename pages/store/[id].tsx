@@ -9,6 +9,7 @@ import ListItemText from "@mui/material/ListItemText"
 import ListItemButton from "@mui/material/ListItemButton"
 import ListItemAvatar from "@mui/material/ListItemAvatar"
 import Avatar from "@mui/material/Avatar"
+import Box from "@mui/system/Box"
 
 import { MenuItem, StoreData } from "lib/types"
 import { getStoreData } from "lib/store"
@@ -25,28 +26,35 @@ const Store = ({ store }: StoreProps) => {
       <title>{store.name}</title>
     </Head>
     <Layout fullscreen>
-      <h1>{store.name}</h1>
-      <List
-        sx={{
-          width: '100%',
-          maxWidth: 360,
-          bgcolor: 'background.paper',
-          position: 'relative',
-          overflow: 'auto',
-          maxHeight: 300,
-          '& ul': { padding: 0 },
-        }}
-        subheader={<li />}
-      >
-        {store.menu.map(({ id, name, items }) => (
-          <li key={`section-${id}`}>
-            <ul>
-              <ListSubheader>{name}</ListSubheader>
-              {items.map((item) => <MenuItemEntry key={item.id} storeId={store.id} {...item} />)}
-            </ul>
-          </li>
-        ))}
-      </List>
+      <Box sx={{
+          display: "flex",
+          flexDirection: "column",
+          maxHeight: "100%",
+        }}>
+        <Box>
+          <h1>{store.name}</h1>
+        </Box>
+        <List
+          sx={{
+            width: "100%",
+            bgcolor: "background.paper",
+            position: "relative",
+            overflow: "auto",
+            flexGrow: 1,
+            '& ul': { padding: 0 },
+          }}
+          subheader={<li />}
+        >
+          {store.menu.map(({ id, name, items }) => (
+            <li key={`section-${id}`}>
+              <ul>
+                <ListSubheader>{name}</ListSubheader>
+                {items.map((item) => <MenuItemEntry key={item.id} storeId={store.id} {...item} />)}
+              </ul>
+            </li>
+          ))}
+        </List>
+      </Box>
     </Layout>
   </>)
 }
