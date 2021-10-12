@@ -7,7 +7,8 @@
   "rules": {
     "no-duplicate-imports": "error",
     "camelcase": "warn",
-    "func-style": ["error", "expression", { "allowArrowFunctions": true }]
+    "func-style": ["error", "expression", { "allowArrowFunctions": true }],
+    "no-empty": ["error", { "allowEmptyCatch": true }]
   },
   "extends": [
     "eslint:recommended",

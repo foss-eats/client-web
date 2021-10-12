@@ -1,7 +1,7 @@
 import React, { FC, PropsWithChildren, useCallback, useState } from "react"
 import Head from "next/head"
 import debounce from "lodash.debounce"
-import { clientSide } from "lib/util"
+import { clientSide, Empty } from "lib/util"
 
 
 const DEBOUNCE_TIME = 300
@@ -15,14 +15,16 @@ const services = {
 }
 
 type ServiceMethod<Req, Res> = (req: Req, callback: (res: Res | null, status: google.maps.places.PlacesServiceStatus) => void) => void
-type ServiceMethodReq<S, M extends keyof S> = S[M] extends ServiceMethod<infer Req, infer Res> ? Req : never
-type ServiceMethodRes<S, M extends keyof S> = S[M] extends ServiceMethod<infer Req, infer Res> ? Res : never
+type ServiceMethodReq<S, M extends keyof S> = S[M] extends ServiceMethod<infer Req, unknown> ? Req : never
+type ServiceMethodRes<S, M extends keyof S> = S[M] extends ServiceMethod<unknown, infer Res> ? Res : never
 
 const callGoogleService = <S, M extends keyof S>(service: S | null, m: M, req: ServiceMethodReq<S, M>): Promise<ServiceMethodRes<S, M>> =>
   new Promise((resolve, reject) => {
     if (!service) {
       reject("google services not initialized.")
     } else {
+      // There may be a way to get this to typecheck without any but I don't know it
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const method = service[m] as any as ServiceMethod<any, any>
       method.call(service, req, (res, status) => {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
@@ -35,7 +37,7 @@ const callGoogleService = <S, M extends keyof S>(service: S | null, m: M, req: S
   })
 
 
-export const GoogleMapsContext: FC<PropsWithChildren<{}>> = ({ children }) => (
+export const GoogleMapsContext: FC<PropsWithChildren<Empty>> = ({ children }) => (
   <>
     <Head>
       <script src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_API_KEY_GOOGLE_MAPS}&libraries=places`}></script>

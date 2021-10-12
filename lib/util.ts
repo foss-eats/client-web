@@ -18,3 +18,7 @@ export const ensureServerSide = <T>(f: () => T): T => {
 export const serverSide = <T>(f: () => T): T | null => {
   return splitSide(f, () => null)
 }
+
+export const noop = () => { return }
+
+export type Empty = Record<keyof unknown, never>

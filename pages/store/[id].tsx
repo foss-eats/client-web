@@ -56,7 +56,7 @@ const MenuItemEntry: FC<MenuItem & { storeId: string }> = ({ id, name, price, st
   <ListItem key={`item-${id}`}>
     <ListItemButton 
         role={undefined}
-        onClick={() => {}}>
+        onClick={() => { console.info("TODO: add product to basket") }}>
       <ListItemAvatar>
         <Avatar alt={name} src={`/images/store/${storeId}/menu/${id}.jpg`} />
       </ListItemAvatar>
@@ -72,8 +72,6 @@ export const getServerSideProps: GetServerSideProps<StoreProps, StoreUrlParams> 
   if (!params) return { props: {} }
   const store = await getStoreData(params.id)
   return {
-    props: {
-      store
-    }
+    props: { store: store }
   }
 }

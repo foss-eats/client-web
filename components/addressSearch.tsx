@@ -1,8 +1,11 @@
+/* eslint-disable camelcase */
+// ^ due to use of places api
 import React, { FC } from "react"
 import { identity, prop } from "ramda"
 import { TextField, Autocomplete } from "@mui/material"
 
 import { useAutocomplete, GoogleMapsContext, usePlaces } from "lib/googleMaps"
+import { noop } from "lib/util"
 
 
 export type AddressSearchProps = {
@@ -26,9 +29,9 @@ const getPostalCode = ({ address_components = [] }: google.maps.places.PlaceResu
   .filter(({types}) => types.includes("postal_code"))
   .map(({long_name}) => long_name)[0]
 
-const useAddressSearch = (onSubmit: ((postalCode: string) => void) = (() => {})) => {
+const useAddressSearch = (onSubmit: ((postalCode: string) => void) = noop) => {
   const places = usePlaces()
-  const [options, getPredictions, loading, resetOptions] = useAutocomplete({
+  const [options, getPredictions,, resetOptions] = useAutocomplete({
     componentRestrictions: { country: "de" },
     types: ["address"],
   })
