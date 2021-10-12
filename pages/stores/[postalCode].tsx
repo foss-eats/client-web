@@ -11,8 +11,9 @@ import ListItemAvatar from "@mui/material/ListItemAvatar"
 import ListItemButton from "@mui/material/ListItemButton"
 import Avatar from "@mui/material/Avatar"
 
+import { StoreHeader } from "lib/types"
+import { getStoresForPostalCode } from "lib/store"
 import Layout from "components/layout"
-import { getStoresForPostalCode, StoreHeader, storeHeaders } from "lib/store"
 
 
 export type StoreProps = {

@@ -10,8 +10,9 @@ import ListItemButton from "@mui/material/ListItemButton"
 import ListItemAvatar from "@mui/material/ListItemAvatar"
 import Avatar from "@mui/material/Avatar"
 
+import { MenuItem, StoreData } from "lib/types"
+import { getStoreData } from "lib/store"
 import Layout from "components/layout"
-import { getStoreData, MenuItem, StoreData } from "lib/store"
 
 
 export type StoreProps = {
