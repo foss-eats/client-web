@@ -1,4 +1,3 @@
-import { invoker, T } from "ramda"
 
 export const isBrowser = typeof window !== "undefined" && window.document
 
