@@ -1,5 +1,3 @@
-import { Decimal } from "decimal.js"
-
 
 export type ErrorResponse = {
   type: "error",
@@ -26,5 +24,5 @@ export type MenuCategory = {
 export type MenuItem = {
   id: string,
   name: string,
-  price: Decimal,
+  price: string,
 }
