@@ -1,3 +1,4 @@
+import { ReactElement } from "react"
 
 export const isBrowser = typeof window !== "undefined" && window.document
 
@@ -22,3 +23,11 @@ export const serverSide = <T>(f: () => T): T | null => {
 export const noop = () => { return }
 
 export type Empty = Record<keyof unknown, never>
+
+export const guard = (cond: unknown, f: () => ReactElement): ReactElement | null => {
+  if (cond) {
+    return f()
+  } else {
+    return null
+  }
+}
