@@ -1,48 +1,78 @@
 import { createModel } from "@rematch/core"
 import { RootModel } from "models"
-import { MenuItem } from "lib/types"
 import { Decimal } from "decimal.js"
-import { reduce, reject, whereEq } from "ramda"
+import { omit, reduce, reject, whereEq } from "ramda"
+
+import { MenuItem, StoreId } from "lib/types"
+import { Tagged, ZERO } from "lib/util"
 
 
 export type CartItem = {
-  menuItem: MenuItem,
-  id: number,
+  item: MenuItem,
+  id: CartItemId,
 }
 
 export type State = typeof initialState
 
-const initialState = {
+declare const cartItemIdTag: unique symbol
+export type CartItemId = Tagged<number, typeof cartItemIdTag>
+
+export const emptyCart = {
   items: [] as CartItem[],
-  len: 0 as number,
-  total: new Decimal(0),
-  nextId: 0 as number,
+  len: 0,
+  total: ZERO,
+  nextId: 0 as CartItemId,
+}
+const initialState = {} as Record<StoreId, typeof emptyCart>
+
+const sumItems = reduce<CartItem, Decimal>((sum, item) => sum.add(item?.item?.price || ZERO), ZERO)
+
+export type WithStoreId = {
+  store: StoreId,
 }
 
-const sumItems = reduce<CartItem, Decimal>((sum, { menuItem: { price } }) => sum.add(price), new Decimal(0))
+type AddPayload = WithStoreId & {
+  item: MenuItem,
+}
+
+type RemovePayload = WithStoreId & {
+  item: CartItemId,
+}
 
 export default createModel<RootModel>()({
   state: initialState,
   reducers: {
-    clear: () => initialState,
-    add: ({ items, nextId, ...state }, menuItem: MenuItem) => {
-      const newItems =  [...items, { menuItem, id: nextId }]
-      return {
-        ...state,
-        nextId: nextId + 1,
+    clear: (state, { store }: WithStoreId) => omit([store], state),
+    add: (state, { store, item }: AddPayload) => {
+      const { nextId, items, ...cart } = state[store] || emptyCart
+
+      const newItems = [...items, { item, id: nextId }]
+      const newCart = {
+        ...cart,
+        nextId: nextId + 1 as CartItemId,
         items: newItems,
         len: newItems.length,
         total: sumItems(newItems),
       }
-    },
-    remove: ({ items, ...state }, id: number) => {
-      const newItems = reject(whereEq({ id }), items)
       return {
         ...state,
+        [store]: newCart,
+      }
+    },
+    remove: (state, { store, item }: RemovePayload) => {
+      const { items, ...cart } = state[store] || emptyCart
+
+      const newItems = reject(whereEq({ id: item }), items)
+      const newCart = {
+        ...cart,
         items: newItems,
         len: newItems.length,
         total: sumItems(newItems),
+      }
+      return {
+        ...state,
+        [store]: newCart,
       }
     },
   },
-});
+})

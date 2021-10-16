@@ -1,3 +1,4 @@
+import { Decimal } from "decimal.js"
 import { ReactElement } from "react"
 
 export const isBrowser = typeof window !== "undefined" && window.document
@@ -31,3 +32,8 @@ export const guard = (cond: unknown, f: () => ReactElement): ReactElement | null
     return null
   }
 }
+
+declare const __tag: unique symbol
+export type Tagged<A, T> = A & { [__tag]: T }
+
+export const ZERO = new Decimal(0)

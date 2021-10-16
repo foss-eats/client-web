@@ -7,14 +7,15 @@ import Fab from "@mui/material/Fab"
 
 import { useSelector } from "models"
 import { useRouter } from "next/router"
+import { WithStoreId } from "models/cart"
 
 
-const CartAvatar: FC = () => {
-  const itemCount = useSelector(s => s.cart.len)
-  return itemCount > 0
+const CartAvatar: FC<WithStoreId> = ({ store }) => {
+  const itemCount = useSelector(s => s.cart[store]?.len)
+  return itemCount
     ? (
       <FixedBottom>
-        <CartAvatarComponent {...{ itemCount }} />
+        <CartAvatarComponent {...{ itemCount, store }} />
       </FixedBottom>
     )
     : null
@@ -37,14 +38,14 @@ const SmallAvatar = styled(Avatar)({
   fontSize: "1em",
 })
 
-const CartAvatarComponent: FC<{ itemCount: number }> = ({ itemCount }) => {
+const CartAvatarComponent: FC<{ itemCount: number } & WithStoreId> = ({ itemCount, store }) => {
   const router = useRouter()
   return (
     <Badge
       overlap="circular"
       anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       badgeContent={<SmallAvatar>{itemCount}</SmallAvatar>}
-      onClick={() => router.push("/cart")}
+      onClick={() => router.push(`/store/${store}/cart`)}
     >
       <Avatar>
         <RoomServiceIcon />

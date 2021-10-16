@@ -6,16 +6,14 @@ import Container from "@mui/material/Container"
 import { guard } from "lib/util"
 import AppBar from "components/appbar"
 import Footer from "components/footer"
-import CartAvatar from "components/cart/avatar"
 
 
 export type LayoutProps = {
   children: React.ReactNode,
   home?: boolean,
   fullscreen?: boolean,
-  noBell?: boolean,
 }
-const Layout: FC<LayoutProps> = ({ children, home, noBell }) => {
+const Layout: FC<LayoutProps> = ({ children, home }) => {
   return (<>
     <CssBaseline />
     <Head>
@@ -26,7 +24,6 @@ const Layout: FC<LayoutProps> = ({ children, home, noBell }) => {
       {children}
     </Container>
     <Footer></Footer>
-    {guard(!noBell, () => <CartAvatar />)}
   </>)
 }
 export default Layout

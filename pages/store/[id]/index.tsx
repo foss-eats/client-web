@@ -13,7 +13,9 @@ import Avatar from "@mui/material/Avatar"
 import { MenuItem, StoreData } from "lib/types"
 import { getStoreData } from "lib/store"
 import Layout from "components/layout"
+import CartAvatar from "components/cart/avatar"
 import { useDispatch } from "models"
+import { WithStoreId } from "models/cart"
 
 
 export type StoreProps = {
@@ -38,26 +40,27 @@ const Store = ({ store }: StoreProps) => {
           <li key={`section-${id}`}>
             <ul>
               <ListSubheader sx={{ top: "64px" }} >{name}</ListSubheader>
-              {items.map((item) => <MenuItemEntry key={item.id} storeId={store.id} {...item} />)}
+              {items.map((item) => <MenuItemEntry key={item.id} store={store.id} {...item} />)}
             </ul>
           </li>
         ))}
       </List>
+      <CartAvatar store={store.id} />
     </Layout>
   </>)
 }
 export default Store
 
-const MenuItemEntry: FC<MenuItem & { storeId: string }> = (item) => {
-  const { id, name, price, storeId } = item
+const MenuItemEntry: FC<MenuItem & WithStoreId> = ({ store, ...item }) => {
+  const { id, name, price } = item
   const { cart } = useDispatch()
   return (
     <ListItem key={`item-${id}`}>
       <ListItemButton 
           role={undefined}
-          onClick={() => cart.add(item)}>
+          onClick={() => cart.add({ store, item })}>
         <ListItemAvatar>
-          <Avatar alt={name} src={`/images/store/${storeId}/menu/${id}.jpg`} />
+          <Avatar alt={name} src={`/images/store/${store}/menu/${id}.jpg`} />
         </ListItemAvatar>
         <ListItemText primary={name} secondary={`${price} €`} />
       </ListItemButton>
@@ -72,6 +75,6 @@ export const getServerSideProps: GetServerSideProps<StoreProps, StoreUrlParams> 
   if (!params) return { props: {} }
   const store = await getStoreData(params.id)
   return {
-    props: { store: store }
+    props: { store },
   }
 }
