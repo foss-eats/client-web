@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren, useCallback, useState } from "react"
+import React, { FC, PropsWithChildren, useState } from "react"
 import Head from "next/head"
 import debounce from "lodash.debounce"
 import { clientSide, Empty } from "lib/util"
@@ -40,7 +40,7 @@ const callGoogleService = <S, M extends keyof S>(service: S | null, m: M, req: S
 export const GoogleMapsContext: FC<PropsWithChildren<Empty>> = ({ children }) => (
   <>
     <Head>
-      <script src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_API_KEY_GOOGLE_MAPS}&libraries=places`}></script>
+      <script async src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_API_KEY_GOOGLE_MAPS}&libraries=places`}></script>
     </Head>
     {children}
   </>
@@ -74,7 +74,7 @@ export const useAutocomplete = (settings: UseAutocompleteSettings = {}): UseAuto
 
   return [
     options,
-    useCallback(debounce(autocomplete, DEBOUNCE_TIME), []),
+    debounce(autocomplete, DEBOUNCE_TIME),
     loading,
     resetOptions,
   ]

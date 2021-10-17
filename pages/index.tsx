@@ -1,11 +1,10 @@
 import React from "react"
 import { useRouter } from "next/router"
-import Paper from "@mui/material/Paper"
-import Grid from "@mui/material/Grid"
+import { Paper, Grid } from "@mui/material"
 
 import { Empty } from "lib/util"
-import Layout from "components/layout"
-import AddressSearch from "components/addressSearch"
+import Layout from "components/Layout"
+import AddressSearch from "components/AddressSearch"
 
 
 export type HomeProps = Empty

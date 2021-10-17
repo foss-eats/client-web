@@ -1,11 +1,10 @@
 import React, { FC } from "react"
 import Head from "next/head"
-import CssBaseline from "@mui/material/CssBaseline"
-import Container from "@mui/material/Container"
+import { CssBaseline, Container } from "@mui/material"
 
 import { guard } from "lib/util"
-import AppBar from "components/appbar"
-import Footer from "components/footer"
+import AppBar from "components/AppBar"
+import Footer from "components/Footer"
 
 
 export type LayoutProps = {

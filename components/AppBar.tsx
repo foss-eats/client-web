@@ -1,12 +1,6 @@
 import React, { FC } from "react"
-import MuiAppBar from "@mui/material/AppBar"
-import Toolbar from "@mui/material/Toolbar"
-import IconButton from "@mui/material/IconButton"
-import Typography from "@mui/material/Typography"
-import Menu from "@mui/material/Menu"
-import MenuItem from "@mui/material/MenuItem"
-import AccountCircle from "@mui/icons-material/AccountCircle"
-import MenuIcon from "@mui/icons-material/Menu"
+import { AppBar as MuiAppBar, Toolbar, IconButton, Typography, Menu, MenuItem } from "@mui/material"
+import { AccountCircle, Menu as MenuIcon } from "@mui/icons-material"
 
 
 const AppBar: FC = () => {

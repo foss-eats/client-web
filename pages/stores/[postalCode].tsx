@@ -13,7 +13,7 @@ import Avatar from "@mui/material/Avatar"
 
 import { StoreHeader } from "lib/types"
 import { getStoresForPostalCode } from "lib/store"
-import Layout from "components/layout"
+import Layout from "components/Layout"
 
 
 export type StoreProps = {
