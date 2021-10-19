@@ -1,7 +1,7 @@
 import React, { FC, PropsWithChildren, useState } from "react"
 import Head from "next/head"
 import debounce from "lodash.debounce"
-import { clientSide, Empty } from "lib/util"
+import { clientSide, EmptyObject } from "lib/util"
 
 
 const DEBOUNCE_TIME = 300
@@ -37,7 +37,7 @@ const callGoogleService = <S, M extends keyof S>(service: S | null, m: M, req: S
   })
 
 
-export const GoogleMapsContext: FC<PropsWithChildren<Empty>> = ({ children }) => (
+export const GoogleMapsContext: FC<PropsWithChildren<EmptyObject>> = ({ children }) => (
   <>
     <Head>
       <script async src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_API_KEY_GOOGLE_MAPS}&libraries=places`}></script>

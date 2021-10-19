@@ -1,5 +1,6 @@
 import { Decimal } from "decimal.js"
 import { GetServerSideProps, GetStaticPaths, GetStaticProps } from "next"
+import { useRouter } from "next/router"
 import { ParsedUrlQuery } from "querystring"
 import { FC, ReactElement } from "react"
 
@@ -25,7 +26,8 @@ export const serverSide = <T>(f: () => T): T | null => {
 
 export const noop = () => { return }
 
-export type Empty = Record<keyof unknown, never>
+export type EmptyObject = Record<keyof unknown, never>
+export type AnyObject = Record<keyof unknown, unknown>
 
 export const guard = (cond: unknown, f: () => ReactElement): ReactElement | null => {
   if (cond) {
@@ -33,6 +35,11 @@ export const guard = (cond: unknown, f: () => ReactElement): ReactElement | null
   } else {
     return null
   }
+}
+
+export const useParams = <Q extends ParsedUrlQuery>(): Q => {
+  const router = useRouter()
+  return router.query as Q
 }
 
 export type NextFC<

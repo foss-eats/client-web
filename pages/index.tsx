@@ -2,12 +2,12 @@ import React from "react"
 import { useRouter } from "next/router"
 import { Paper, Grid } from "@mui/material"
 
-import { Empty } from "lib/util"
+import { EmptyObject } from "lib/util"
 import Layout from "components/Layout"
 import AddressSearch from "components/AddressSearch"
 
 
-export type HomeProps = Empty
+export type HomeProps = EmptyObject
 const Home: React.FC<HomeProps> = () => {
   const router = useRouter()
   return (

@@ -11,7 +11,7 @@ type UseRemoveDialog = [
   (item: CartItem) => void,
 ]
 
-export const useRemoveDialog = (storeId: StoreId): UseRemoveDialog => {
+export const useConfirmRemoveDialog = (storeId: StoreId): UseRemoveDialog => {
   const [Comp, setOpen] = useDialog()
   const [item, setItem] = useState<CartItem | null>(null)
   const { remove } = useDispatch().cart

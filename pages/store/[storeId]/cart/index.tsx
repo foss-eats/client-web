@@ -1,21 +1,21 @@
 import React, { FC } from "react"
-import { GetServerSideProps } from "next"
 import Head from "next/head"
 import DeleteIcon from "@mui/icons-material/Delete"
 import { IconButton, TableContainer, Table, TableBody, TableRow, TableCell, Paper, NoSsr } from "@mui/material"
 
 import Layout from "components/Layout"
+import NumberInput from "components/NumberInput"
 import { useDispatch } from "models"
+import { useRedirect } from "lib/redirect"
+import { useParams } from "lib/util"
+import { useConfirmRemoveDialog } from "lib/confirmRemoveDialog"
 import { Cart as CartData, CartItem, useStore, WithStoreId } from "models/cart"
 import styles from "./styles.module.sass"
 import { StoreUrlParams } from "pages/store/[storeId]"
-import NumberInput from "components/NumberInput"
-import { useRemoveDialog } from "./hooks"
-import { useRedirect } from "lib/redirect"
 
 
-export type CartProps = WithStoreId
-const Cart: FC<CartProps> = ({ storeId }) => {
+const Cart: FC = () => {
+  const { storeId } = useParams<StoreUrlParams>()
   const cart = useStore(storeId)
   const Redirect = useRedirect({
     ifClient: () => !cart ? `/store/${storeId}` : null,
@@ -38,7 +38,7 @@ export default Cart
 
 
 const CartTable: FC<CartData & WithStoreId> = ({ items, total, storeId }) => {
-  const [RemoveDialog, confirmRemove] = useRemoveDialog(storeId)
+  const [RemoveDialog, confirmRemove] = useConfirmRemoveDialog(storeId)
   const { changeAmount } = useDispatch().cart
   return (<>
     <RemoveDialog />
@@ -106,11 +106,3 @@ const TotalRow: FC<TotalRowProps> = ({ total }) => (
     <TableCell />
   </TableRow>
 )
-
-
-export const getServerSideProps: GetServerSideProps<CartProps, StoreUrlParams> = async ({ params }) => {
-  if (!params) throw new Error(`No params provided`)
-  return {
-    props: params,
-  }
-}
