@@ -5,20 +5,23 @@ import { Translations } from "translation"
 
 export default identity<Translations>({
   pages: {
+    index: {
+      title: () => `foss-eats`,
+    },
     store: {
       byId: {
         cart: {
-          title: (storeName) => `Cart${storeName ? ` – ${storeName}` : ""}`
+          title: ({ store }) => `Cart – ${store.name}`
         },
         index: {
-          title: (storeName) => `Menu – ${storeName}`,
+          title: ({ store }) => `Menu – ${store.name}`,
         }
       }
     },
     stores: {
       byPostalCode: {
         index: {
-          title: (postalCode) => `Restaurants that deliver to postal code ${postalCode}`,
+          title: ({ postalCode }) => `Restaurants that deliver to postal code ${postalCode}`,
         }
       }
     }

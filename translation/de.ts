@@ -5,20 +5,23 @@ import { Translations } from "translation"
 
 export default identity<Translations>({
   pages: {
+    index: {
+      title: () => `foss-eats`,
+    },
     store: {
       byId: {
         cart: {
-          title: (storeName) => `Einkaufskorb${storeName ? ` – ${storeName}` : ""}`
+          title: ({ store }) => `Einkaufskorb – ${store.name} | foss-eats`
         },
         index: {
-          title: (storeName) => `Menü – ${storeName}`,
+          title: ({ store }) => `Menü – ${store.name} | foss-eats`,
         }
       }
     },
     stores: {
       byPostalCode: {
         index: {
-          title: (postalCode) => `Restaurants die in der PLZ ${postalCode} liefern`,
+          title: ({ postalCode }) => `Restaurants die in der PLZ ${postalCode} liefern`,
         }
       }
     }

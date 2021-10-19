@@ -1,16 +1,24 @@
 import React from "react"
+import Head from "next/head"
 import { useRouter } from "next/router"
 import { Paper, Grid } from "@mui/material"
 
+import { PageTranslations } from "translation"
+import { useTranslations } from "models/i18n"
 import { EmptyObject } from "lib/util"
 import Layout from "components/Layout"
 import AddressSearch from "components/AddressSearch"
 
 
+export type Translations = PageTranslations<HomeProps>
 export type HomeProps = EmptyObject
-const Home: React.FC<HomeProps> = () => {
+const Home: React.FC<HomeProps> = (props) => {
+  const translations = useTranslations().pages.index
   const router = useRouter()
-  return (
+  return (<>
+    <Head>
+      <title>{translations.title(props)}</title>
+    </Head>
     <Layout home>
       <Grid
         container
@@ -26,6 +34,6 @@ const Home: React.FC<HomeProps> = () => {
         </Paper>
       </Grid>
     </Layout>
-  )
+  </>)
 }
 export default Home

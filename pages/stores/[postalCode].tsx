@@ -11,26 +11,25 @@ import ListItemAvatar from "@mui/material/ListItemAvatar"
 import ListItemButton from "@mui/material/ListItemButton"
 import Avatar from "@mui/material/Avatar"
 
-import { Maybe } from "lib/util"
 import { StoreHeader } from "lib/types"
 import { getStoresForPostalCode } from "lib/store"
 import Layout from "components/Layout"
 import { useTranslations } from "models/i18n"
+import { PageTranslations } from "translation"
 
 
-export type Translations = {
-  title: (postalCode: Maybe<string>) => string,
-}
+export type Translations = PageTranslations<StoreProps>
 
 export type StoreProps = {
   postalCode?: string,
   stores?: StoreHeader[],
 }
-const Stores = ({ stores, postalCode }: StoreProps) => {
+const Stores: FC<StoreProps> = (props) => {
+  const { stores, postalCode } = props
   const translations = useTranslations().pages.stores.byPostalCode.index
   return (<>
     <Head>
-      <title>{translations.title(postalCode)}</title>
+      <title>{translations.title(props)}</title>
     </Head>
     <Layout>
       {stores

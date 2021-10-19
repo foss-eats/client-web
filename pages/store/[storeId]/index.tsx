@@ -11,19 +11,19 @@ import CartAvatar from "components/Cart/Avatar"
 import { useDispatch } from "models"
 import { WithStoreId } from "models/cart"
 import { useTranslations } from "models/i18n"
+import { PageTranslations } from "translation"
 
 
-export type Translations = {
-  title: (name: string) => string,
-}
+export type Translations = PageTranslations<StoreProps>
 export type StoreProps = {
   store: StoreData,
 }
-const Store: FC<StoreProps> = ({ store }) => {
+const Store: FC<StoreProps> = (props) => {
+  const { store } = props
   const translations = useTranslations().pages.store.byId.index
   return (<>
     <Head>
-      <title>{translations.title(store.name)}</title>
+      <title>{translations.title(props)}</title>
     </Head>
     <Layout>
       <h1>{store.name}</h1>

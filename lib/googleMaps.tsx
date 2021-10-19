@@ -14,7 +14,22 @@ const services = {
   autocomplete: clientSide(() => new google.maps.places.AutocompleteService())
 }
 
-type ServiceMethod<Req, Res> = (req: Req, callback: (res: Res | null, status: google.maps.places.PlacesServiceStatus) => void) => void
+// reexport these aweful type names
+export enum PlacesServiceStatus {
+  INVALID_REQUEST = "INVALID_REQUEST",
+  NOT_FOUND = "NOT_FOUND",
+  OK = "OK",
+  OVER_QUERY_LIMIT = "OVER_QUERY_LIMIT",
+  REQUEST_DENIED = "REQUEST_DENIED",
+  UNKNOWN_ERROR = "UNKNOWN_ERROR",
+  ZERO_RESULTS = "ZERO_RESULTS",
+}
+export type AutocompletionRequest = google.maps.places.AutocompletionRequest
+export type AutocompletePrediction = google.maps.places.AutocompletePrediction
+export type PlaceDetailsRequest = google.maps.places.PlaceDetailsRequest
+export type PlaceResult = google.maps.places.PlaceResult
+
+type ServiceMethod<Req, Res> = (req: Req, callback: (res: Res | null, status: PlacesServiceStatus) => void) => void
 type ServiceMethodReq<S, M extends keyof S> = S[M] extends ServiceMethod<infer Req, unknown> ? Req : never
 type ServiceMethodRes<S, M extends keyof S> = S[M] extends ServiceMethod<unknown, infer Res> ? Res : never
 
@@ -23,11 +38,11 @@ const callGoogleService = <S, M extends keyof S>(service: S | null, m: M, req: S
     if (!service) {
       reject("google services not initialized.")
     } else {
-      // There may be a way to get this to typecheck without any but I don't know it
+      // There may be a way to get this to typecheck without any but I don"t know it
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const method = service[m] as any as ServiceMethod<any, any>
       method.call(service, req, (res, status) => {
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
+        if (status === PlacesServiceStatus.OK) {
           resolve(res as ServiceMethodRes<S, M>)
         } else {
           reject(status)
@@ -52,11 +67,11 @@ type UseAutocomplete = [
   boolean,
   () => void,
 ]
-type UseAutocompleteSettings = Omit<google.maps.places.AutocompletionRequest, "input">
+type UseAutocompleteSettings = Omit<AutocompletionRequest, "input">
 
 export const useAutocomplete = (settings: UseAutocompleteSettings = {}): UseAutocomplete => {
   const [loading, setLoading] = useState(false)
-  const [options, setOptions] = useState<google.maps.places.AutocompletePrediction[]>([])
+  const [options, setOptions] = useState<AutocompletePrediction[]>([])
 
   const autocomplete = async (input: string) => {
     setLoading(true)
@@ -81,7 +96,7 @@ export const useAutocomplete = (settings: UseAutocompleteSettings = {}): UseAuto
 }
 
 export type Places = {
-  details: (req: google.maps.places.PlaceDetailsRequest) => Promise<google.maps.places.PlaceResult>,
+  details: (req: PlaceDetailsRequest) => Promise<PlaceResult>,
 }
 const places: Places = {
   details: (req) => callGoogleService(services.places, "getDetails", req),

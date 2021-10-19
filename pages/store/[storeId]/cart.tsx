@@ -3,26 +3,25 @@ import Head from "next/head"
 import Link from "next/link"
 import { NoSsr } from "@mui/material"
 
-import { Maybe } from "lib/util"
 import Layout from "components/Layout"
 import CartComp from "components/Cart"
 import { useStore } from "models/cart"
 import { StoreProps } from "pages/store/[storeId]"
 import { useTranslations } from "models/i18n"
+import { PageTranslations } from "translation"
 
 export { getServerSideProps } from "pages/store/[storeId]"
 
 
-export type Translations = {
-  title: (store: Maybe<string>) => string,
-}
-const Cart: FC<StoreProps> = ({ store }) => {
+export type Translations = PageTranslations<StoreProps>
+const Cart: FC<StoreProps> = (props) => {
+  const { store } = props
   const cart = useStore(store?.id)
   const translations = useTranslations().pages.store.byId.cart
 
   return (<>
     <Head>
-      <title>{translations.title(store?.name)}</title>
+      <title>{translations.title(props)}</title>
     </Head>
     <Layout>
       <NoSsr>
