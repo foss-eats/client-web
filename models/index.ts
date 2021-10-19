@@ -1,11 +1,10 @@
 import persistPlugin from "@rematch/persist"
 import { init, Models, RematchDispatch, RematchRootState } from "@rematch/core"
-import sessionStorage from 'redux-persist/lib/storage/session'
 import * as redux from 'react-redux'
 
 import { noopStorageConfig } from "lib/redux/storage"
-import cart from "models/cart"
-import i18n from "models/i18n"
+import cart, { storage as cartStorage } from "models/cart"
+import i18n, { storage as i18nStorage } from "models/i18n"
 import { path } from "ramda"
 
 
@@ -25,9 +24,12 @@ export const store = init<RootModel>({
     persistPlugin<RootState, RootModel>(noopStorageConfig, {
       cart: {
         key: "cart",
-        storage: sessionStorage,
+        storage: cartStorage,
       },
-      i18n: noopStorageConfig,
+      i18n: {
+        key: "i18n",
+        storage: i18nStorage,
+      },
     }),
   ]
 })

@@ -1,3 +1,4 @@
+import sessionStorage from 'redux-persist/lib/storage/session'
 import { createModel } from "@rematch/core"
 import Decimal from "decimal.js"
 import { compose, not, omit, whereEq } from "ramda"
@@ -5,6 +6,8 @@ import { compose, not, omit, whereEq } from "ramda"
 import { Maybe, Tagged } from "lib/util"
 import { MenuItem, StoreId } from "lib/types"
 import { RootModel, useSelector } from "models"
+
+
 
 
 export type CartItem = {
@@ -16,6 +19,7 @@ export type CartItem = {
 
 declare const cartItemIdTag: unique symbol
 export type CartItemId = Tagged<number, typeof cartItemIdTag>
+
 
 export const emptyCart = {
   items: [] as CartItem[],
@@ -56,7 +60,7 @@ type ChangeAmountPayload = WithStoreId & WithCartItemId & {
 }
 
 export const useStore = (store: Maybe<StoreId>): Maybe<Cart> =>
-  useSelector(s => store ? s.cart[store] : emptyCart)
+useSelector(s => store ? s.cart[store] : emptyCart)
 
 type Endo<A> = (a: A) => A
 
@@ -89,6 +93,8 @@ const changeAmount = (state: State, { storeId, itemId , amount }: ChangeAmountPa
   ...item,
   amount: itemId === item.id ? amount : item.amount,
 }))(state)
+
+export const storage = sessionStorage
 
 export default createModel<RootModel>()({
   state: initialState,
