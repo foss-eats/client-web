@@ -2,7 +2,7 @@ import { Decimal } from "decimal.js"
 import { GetServerSideProps, GetStaticPaths, GetStaticProps } from "next"
 import { useRouter } from "next/router"
 import { ParsedUrlQuery } from "querystring"
-import { FC, ReactElement } from "react"
+import { FC } from "react"
 
 export const isBrowser = typeof window !== "undefined" && window.document
 
@@ -24,19 +24,10 @@ export const serverSide = <T>(f: () => T): T | null => {
   return splitSide(f, () => null)
 }
 
-export const noop = () => { return }
-
 export type EmptyObject = Record<keyof unknown, never>
 export type AnyObject = Record<keyof unknown, unknown>
 export type Maybe<A> = A | undefined
 
-export const guard = (cond: unknown, f: () => ReactElement): ReactElement | null => {
-  if (cond) {
-    return f()
-  } else {
-    return null
-  }
-}
 
 export const useParams = <Q extends ParsedUrlQuery>(): Q => {
   const router = useRouter()

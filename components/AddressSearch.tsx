@@ -5,7 +5,7 @@ import { identity, prop } from "ramda"
 import { TextField, Autocomplete } from "@mui/material"
 
 import { useAutocomplete, GoogleMapsContext, usePlaces } from "lib/googleMaps"
-import { noop } from "lib/util"
+import { noop } from "lib/function"
 
 
 export type AddressSearchProps = {

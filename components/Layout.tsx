@@ -2,7 +2,7 @@ import React, { FC } from "react"
 import Head from "next/head"
 import { CssBaseline, Container } from "@mui/material"
 
-import { guard } from "lib/util"
+import { guard } from "lib/function"
 import AppBar from "components/AppBar"
 import Footer from "components/Footer"
 
@@ -18,7 +18,7 @@ const Layout: FC<LayoutProps> = ({ children, home }) => {
     <Head>
       <link rel="icon" href="/favicon.ico" />
     </Head>
-    {guard(!home, () => <AppBar />)}
+    {guard(!home, () => (<AppBar />))}
     <Container sx={{ pt: home ? 0 : "64px" }}>
       {children}
     </Container>

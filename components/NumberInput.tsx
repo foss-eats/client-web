@@ -2,7 +2,7 @@ import React, { FC } from "react"
 import { Divider, IconButton, InputBase, Paper } from "@mui/material"
 import { ArrowLeft, ArrowRight } from "@mui/icons-material"
 
-import { noop } from "lib/util"
+import { noop } from "lib/function"
 import styles from "./NumberInput.module.sass"
 
 
