@@ -13,10 +13,9 @@ import { WithStoreId } from "models/cart"
 
 
 export type StoreProps = {
-  store?: StoreData,
+  store: StoreData,
 }
-const Store = ({ store }: StoreProps) => {
-  if (!store) return <>No store found</>
+const Store: FC<StoreProps> = ({ store }) => {
   return (<>
     <Head>
       <title>{store.name}</title>
@@ -49,7 +48,7 @@ const MenuItemEntry: FC<MenuItem & WithStoreId> = ({ storeId, ...item }) => {
   const { id, name, price } = item
   const { cart } = useDispatch()
   return (
-    <ListItem key={`item-${id}`}>
+    <ListItem>
       <ListItemButton 
           role={undefined}
           onClick={() => cart.add({ storeId, item, amount: 1 })}>
@@ -62,13 +61,12 @@ const MenuItemEntry: FC<MenuItem & WithStoreId> = ({ storeId, ...item }) => {
   )
 }
 
-export interface StoreUrlParams extends ParsedUrlQuery {
+export type StoreUrlParams = ParsedUrlQuery & {
   storeId: StoreId,
 }
 export const getServerSideProps: GetServerSideProps<StoreProps, StoreUrlParams> = async ({ params }) => {
-  if (!params) return { props: {} }
-  const store = await getStoreData(params.storeId)
-  return {
-    props: { store },
-  }
+  const store = await getStoreData(params?.storeId)
+  return store
+    ? { props: { store } }
+    : { notFound: true }
 }

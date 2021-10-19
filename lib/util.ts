@@ -28,6 +28,7 @@ export const noop = () => { return }
 
 export type EmptyObject = Record<keyof unknown, never>
 export type AnyObject = Record<keyof unknown, unknown>
+export type Maybe<A> = A | undefined
 
 export const guard = (cond: unknown, f: () => ReactElement): ReactElement | null => {
   if (cond) {

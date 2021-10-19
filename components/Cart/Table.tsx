@@ -1,44 +1,17 @@
 import React, { FC } from "react"
-import Head from "next/head"
 import DeleteIcon from "@mui/icons-material/Delete"
-import { IconButton, TableContainer, Table, TableBody, TableRow, TableCell, Paper, NoSsr } from "@mui/material"
+import { IconButton, TableContainer, Table, TableBody, TableRow, TableCell, Paper } from "@mui/material"
 
-import Layout from "components/Layout"
+import { useConfirmRemoveDialog } from "lib/confirmRemoveDialog"
 import NumberInput from "components/NumberInput"
 import { useDispatch } from "models"
-import { useRedirect } from "lib/redirect"
-import { useParams } from "lib/util"
-import { useConfirmRemoveDialog } from "lib/confirmRemoveDialog"
-import { Cart as CartData, CartItem, useStore, WithStoreId } from "models/cart"
-import styles from "./styles.module.sass"
-import { StoreUrlParams } from "pages/store/[storeId]"
+import { Cart as CartData, CartItem, WithStoreId } from "models/cart"
+import { StoreProps } from "pages/store/[storeId]"
+import styles from "./Table.module.sass"
 
 
-const Cart: FC = () => {
-  const { storeId } = useParams<StoreUrlParams>()
-  const cart = useStore(storeId)
-  const Redirect = useRedirect({
-    ifClient: () => !cart ? `/store/${storeId}` : null,
-  })
-
-  return (<>
-    <Head>
-      <title>cart</title>
-    </Head>
-    <Layout>
-      <Redirect>
-        <NoSsr>
-          <CartTable storeId={storeId} {...cart as CartData} />
-        </NoSsr>
-      </Redirect>
-    </Layout>
-  </>)
-}
-export default Cart
-
-
-const CartTable: FC<CartData & WithStoreId> = ({ items, total, storeId }) => {
-  const [RemoveDialog, confirmRemove] = useConfirmRemoveDialog(storeId)
+const CartTable: FC<CartData & StoreProps> = ({ items, total, store }) => {
+  const [RemoveDialog, confirmRemove] = useConfirmRemoveDialog(store.id)
   const { changeAmount } = useDispatch().cart
   return (<>
     <RemoveDialog />
@@ -48,12 +21,12 @@ const CartTable: FC<CartData & WithStoreId> = ({ items, total, storeId }) => {
             {items.map(item => (
               <ItemRow
                 key={item.id}
-                storeId={storeId}
+                storeId={store.id}
                 onAmountChange={amount => {
                   if (amount === 0) {
                     confirmRemove(item)
                   } else {
-                    changeAmount({ storeId, itemId: item.id, amount })
+                    changeAmount({ storeId: store.id, itemId: item.id, amount })
                   }
                 }}
                 {...item}
@@ -65,6 +38,7 @@ const CartTable: FC<CartData & WithStoreId> = ({ items, total, storeId }) => {
     </TableContainer>
   </>)
 }
+export default CartTable
 
 type ItemRowProps = CartItem & WithStoreId & {
   onAmountChange: (amount: number) => unknown,

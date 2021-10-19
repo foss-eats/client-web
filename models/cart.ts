@@ -2,8 +2,8 @@ import { createModel } from "@rematch/core"
 import Decimal from "decimal.js"
 import { compose, not, omit, whereEq } from "ramda"
 
+import { Maybe, Tagged } from "lib/util"
 import { MenuItem, StoreId } from "lib/types"
-import { Tagged } from "lib/util"
 import { RootModel, useSelector } from "models"
 
 
@@ -55,7 +55,7 @@ type ChangeAmountPayload = WithStoreId & WithCartItemId & {
   amount: number,
 }
 
-export const useStore = (store: StoreId | undefined): Cart | undefined =>
+export const useStore = (store: Maybe<StoreId>): Maybe<Cart> =>
   useSelector(s => store ? s.cart[store] : emptyCart)
 
 type Endo<A> = (a: A) => A

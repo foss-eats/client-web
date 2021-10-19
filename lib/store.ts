@@ -1,7 +1,7 @@
-import { StoreData, StoreHeader } from "lib/types"
+import { StoreData, StoreHeader, StoreId } from "lib/types"
 import { contains, pick, where, whereEq } from "ramda"
 import { stores } from "./dummyData"
-import { ensureServerSide } from "./util"
+import { ensureServerSide, Maybe } from "./util"
 
 
 const storeToHeader: (store: StoreData) => StoreHeader = pick(["id", "name", "postalCodes"])
@@ -12,9 +12,8 @@ export const getStoresForPostalCode = (postalCode: string): Promise<StoreHeader[
   return Promise.resolve(headers)
 })
 
-export const getStoreData = (id: string): Promise<StoreData> => ensureServerSide(() => {
+export const getStoreData = (id: Maybe<StoreId>): Promise<Maybe<StoreData>> => ensureServerSide(() => {
+  if (!id) return Promise.resolve(undefined)
   const store = stores.find(whereEq({ id }))
-  return store
-    ? Promise.resolve(store)
-    : Promise.reject(`no store found for id:${id}`)
+  return Promise.resolve(store)
 })
