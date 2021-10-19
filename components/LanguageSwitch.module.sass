@@ -1,0 +1,35 @@
+
+button.switchButton
+  padding-left: 0.75em
+  padding-right: 0.5em
+
+.langSwitchPoppover
+  overflow: hidden
+  button
+    padding-left: 1.25em
+    padding-right: 1.25em
+    position: relative
+    font-weight: bold
+    &:hover::after
+      position: absolute
+      top: 50%
+      right: 0
+      transform: translateY(-50%)
+      content: ""
+      width: 0
+      height: 0
+      opacity: 0.5
+      border-top: 8px solid transparent
+      border-bottom: 8px solid transparent
+      border-right: 8px solid 
+    &.current::after
+      position: absolute
+      top: 50%
+      right: 0
+      transform: translateY(-50%)
+      content: ""
+      width: 0 
+      height: 0 
+      border-top: 8px solid transparent
+      border-bottom: 8px solid transparent
+      border-right: 8px solid

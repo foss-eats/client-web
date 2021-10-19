@@ -4,6 +4,14 @@ import { Translations } from "translation"
 
 
 export default identity<Translations>({
+  model: {
+    i18n: {
+      lang: {
+        de: `de`,
+        en: `en`,
+      }
+    },
+  },
   pages: {
     index: {
       title: () => `foss-eats`,
@@ -27,8 +35,17 @@ export default identity<Translations>({
       byPostalCode: {
         index: {
           title: ({ postalCode }) => `Restaurants – in ${postalCode} | foss-eats`,
-        }
-      }
-    }
-  }
+        },
+      },
+    },
+  },
+  components: {
+    Cart: {
+      index: {
+        cart: { title: `What to eat?` },
+        delivery: { title: `Where to deliver to?` },
+        payment: { title: `How to pay?` },
+      },
+    },
+  },
 })

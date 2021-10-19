@@ -2,6 +2,8 @@ import React, { FC } from "react"
 import { AppBar as MuiAppBar, Toolbar, IconButton, Typography, Menu, MenuItem } from "@mui/material"
 import { AccountCircle, Menu as MenuIcon } from "@mui/icons-material"
 
+import LanguageSwitch from "components/LanguageSwitch"
+
 
 const AppBar: FC = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -36,6 +38,7 @@ const AppBar: FC = () => {
         >
           <AccountCircle />
         </IconButton>
+        <LanguageSwitch />
         <Menu
           id="menu-appbar"
           anchorEl={anchorEl}

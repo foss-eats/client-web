@@ -8,6 +8,7 @@ import { useTranslations } from "models/i18n"
 import { EmptyObject } from "lib/util"
 import Layout from "components/Layout"
 import AddressSearch from "components/AddressSearch"
+import LanguageSwitch from "components/LanguageSwitch"
 
 
 export type Translations = PageTranslations<Props>
@@ -32,6 +33,7 @@ const Home: React.FC<Props> = (props) => {
         <Paper elevation={3}>
           <AddressSearch onSubmit={postalCode => router.push(`/stores/${postalCode}`)} />
         </Paper>
+        <LanguageSwitch />
       </Grid>
     </Layout>
   </>)

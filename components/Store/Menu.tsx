@@ -8,8 +8,7 @@ import { Props } from "pages/store/[storeId]"
 
 
 const StoreMenu: FC<Props> = ({ store }) => {
-  return (<>
-    <h1>{store.name}</h1>
+  return (
     <List
       sx={{
         flexGrow: 1,
@@ -26,7 +25,7 @@ const StoreMenu: FC<Props> = ({ store }) => {
         </li>
       ))}
     </List>
-  </>)
+  )
 }
 export default StoreMenu
 
