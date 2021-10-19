@@ -1,5 +1,7 @@
 import { Decimal } from "decimal.js"
-import { ReactElement } from "react"
+import { GetServerSideProps, GetStaticPaths, GetStaticProps } from "next"
+import { ParsedUrlQuery } from "querystring"
+import { FC, ReactElement } from "react"
 
 export const isBrowser = typeof window !== "undefined" && window.document
 
@@ -31,6 +33,15 @@ export const guard = (cond: unknown, f: () => ReactElement): ReactElement | null
   } else {
     return null
   }
+}
+
+export type NextFC<
+  P = Record<string, unknown>,
+  Q extends ParsedUrlQuery = ParsedUrlQuery,
+> = FC<P> & {
+  getServerSideProps?: GetServerSideProps<P, Q>,
+  getStaticPaths?: GetStaticPaths<Q>,
+  getStaticProps?: GetStaticProps<P, Q>,
 }
 
 declare const __tag: unique symbol

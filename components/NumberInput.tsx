@@ -32,6 +32,7 @@ const NumberInput: FC<NumberInputProps> = ({ value, min = Number.NEGATIVE_INFINI
         sx={{ ml: 1, flex: 1 }}
         type="number"
         value={value}
+        componentsProps={{ input: { min, max } }}
         className={styles.numberInput}
         onChange={(evt) => onChange(Number(evt.target.value))}
       />

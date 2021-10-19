@@ -1,42 +1,78 @@
 import React, { FC } from "react"
-import Head from "next/head"
 import { GetServerSideProps } from "next"
+import Head from "next/head"
 import DeleteIcon from "@mui/icons-material/Delete"
-import { IconButton, TableContainer, Table, TableBody, TableRow, TableCell, Paper } from "@mui/material"
+import { IconButton, TableContainer, Table, TableBody, TableRow, TableCell, Paper, NoSsr } from "@mui/material"
 
 import Layout from "components/Layout"
 import { useDispatch } from "models"
-import { CartItem, useStore, WithStoreId } from "models/cart"
+import { Cart as CartData, CartItem, useStore, WithStoreId } from "models/cart"
 import styles from "./styles.module.sass"
 import { StoreUrlParams } from "pages/store/[storeId]"
 import NumberInput from "components/NumberInput"
+import { useRemoveDialog } from "./hooks"
+import { useRedirect } from "lib/redirect"
 
 
 export type CartProps = WithStoreId
 const Cart: FC<CartProps> = ({ storeId }) => {
-  const { items, total } = useStore(storeId)
+  const cart = useStore(storeId)
+  const Redirect = useRedirect({
+    ifClient: () => !cart ? `/store/${storeId}` : null,
+  })
+
   return (<>
     <Head>
       <title>cart</title>
     </Head>
     <Layout>
-      <TableContainer component={Paper}>
-        <Table className={styles.cartTable}>
-          <TableBody>
-            {items.map(item => (
-              <ItemRow key={item.id} storeId={storeId} {...item} />
-            ))}
-            <TotalRow {...{ total }} />
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Redirect>
+        <NoSsr>
+          <CartTable storeId={storeId} {...cart as CartData} />
+        </NoSsr>
+      </Redirect>
     </Layout>
   </>)
 }
 export default Cart
 
-const ItemRow: FC<CartItem & WithStoreId> = ({ storeId, id, amount, item: { name, price } }) => {
-  const { remove, changeAmount } = useDispatch().cart
+
+const CartTable: FC<CartData & WithStoreId> = ({ items, total, storeId }) => {
+  const [RemoveDialog, confirmRemove] = useRemoveDialog(storeId)
+  const { changeAmount } = useDispatch().cart
+  return (<>
+    <RemoveDialog />
+    <TableContainer component={Paper}>
+        <Table className={styles.cartTable}>
+          <TableBody>
+            {items.map(item => (
+              <ItemRow
+                key={item.id}
+                storeId={storeId}
+                onAmountChange={amount => {
+                  if (amount === 0) {
+                    confirmRemove(item)
+                  } else {
+                    changeAmount({ storeId, itemId: item.id, amount })
+                  }
+                }}
+                {...item}
+              />
+            ))}
+            <TotalRow {...{ total }} />
+          </TableBody>
+        </Table>
+    </TableContainer>
+  </>)
+}
+
+type ItemRowProps = CartItem & WithStoreId & {
+  onAmountChange: (amount: number) => unknown,
+}
+const ItemRow: FC<ItemRowProps> = ({ storeId, onAmountChange, ...item }) => {
+  const { remove } = useDispatch().cart
+  const { id, amount, item: { name, price } } = item
+
   return (
     <TableRow>
       <TableCell>{name}</TableCell>
@@ -45,13 +81,13 @@ const ItemRow: FC<CartItem & WithStoreId> = ({ storeId, id, amount, item: { name
         <NumberInput
           value={amount}
           min={0}
-          onChange={n => changeAmount({ storeId, itemId: id, amount: n })}
+          onChange={onAmountChange}
         />
       </TableCell>
       <TableCell className={styles.alignEnd}>
         <IconButton
             aria-label="delete"
-            onClick={() => storeId && remove({ storeId, itemId: id })}>
+            onClick={() => remove({ storeId, itemId: id })}>
           <DeleteIcon />
         </IconButton>
       </TableCell>
@@ -59,10 +95,13 @@ const ItemRow: FC<CartItem & WithStoreId> = ({ storeId, id, amount, item: { name
   )
 }
 
-const TotalRow: FC<{ total: string }> = ({ total }) => (
+type TotalRowProps = Pick<CartData, "total">
+const TotalRow: FC<TotalRowProps> = ({ total }) => (
   <TableRow>
     <TableCell />
-    <TableCell className={styles.alignEnd}>{total} €</TableCell>
+    <TableCell className={styles.alignEnd}>
+      {total} €
+    </TableCell>
     <TableCell />
     <TableCell />
   </TableRow>
@@ -72,8 +111,6 @@ const TotalRow: FC<{ total: string }> = ({ total }) => (
 export const getServerSideProps: GetServerSideProps<CartProps, StoreUrlParams> = async ({ params }) => {
   if (!params) throw new Error(`No params provided`)
   return {
-    props: {
-      storeId: params?.storeId,
-    },
+    props: params,
   }
 }

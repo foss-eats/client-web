@@ -2,7 +2,14 @@
   "root": true,
   "parser": "@typescript-eslint/parser",
   "plugins": [
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "@next/eslint-plugin-next"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@next/next/recommended"
   ],
   "rules": {
     "no-duplicate-imports": "error",
@@ -32,11 +39,5 @@
     "prefer-spread": "error",
     "prefer-rest-params": "error",
     "prefer-regex-literals": "error"
-  },
-  "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended",
-    "next"
-  ]
+  }
 }

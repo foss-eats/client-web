@@ -1,6 +1,6 @@
 import { createModel } from "@rematch/core"
 import Decimal from "decimal.js"
-import { omit, reject, whereEq } from "ramda"
+import { compose, not, omit, whereEq } from "ramda"
 
 import { MenuItem, StoreId } from "lib/types"
 import { Tagged } from "lib/util"
@@ -13,7 +13,6 @@ export type CartItem = {
   id: CartItemId,
 }
 
-export type State = typeof initialState
 
 declare const cartItemIdTag: unique symbol
 export type CartItemId = Tagged<number, typeof cartItemIdTag>
@@ -24,7 +23,10 @@ export const emptyCart = {
   total: "0",
   nextId: 0 as CartItemId,
 }
-const initialState = {} as Record<StoreId, typeof emptyCart>
+export type Cart = typeof emptyCart
+
+const initialState = {} as Record<StoreId, Cart>
+export type State = typeof initialState
 
 const sumItems = (items: CartItem[]) => {
   const sum = items.reduce<Decimal>((sum, item) => {
@@ -53,24 +55,40 @@ type ChangeAmountPayload = WithStoreId & WithCartItemId & {
   amount: number,
 }
 
-export const useStore = (store: StoreId | undefined) => useSelector(s => store ? s.cart[store] : emptyCart) || emptyCart
+export const useStore = (store: StoreId | undefined): Cart | undefined =>
+  useSelector(s => store ? s.cart[store] : emptyCart)
 
 type Endo<A> = (a: A) => A
 
-const mapCart = (storeId: StoreId, f: Endo<typeof emptyCart>) =>
-  (state: typeof initialState): typeof initialState => ({
-    ...state,
-    [storeId]: f(state[storeId] || emptyCart),
-  })
+const mapCart = (storeId: StoreId, f: Endo<Cart>) => (state: State): State => {
+  const newCart = f(state[storeId] || emptyCart)
+  newCart.len = newCart.items.length
+  if (newCart.len === 0) {
+    return omit([storeId], state)
+  } else {
+    newCart.total = sumItems(newCart.items)
+    return {
+      ...state,
+      [storeId]: newCart,
+    }
+  }
+}
+
+const hasAmount: (item: CartItem) => boolean = compose(not, whereEq({ amount: 0 }))
 
 const mapItems =  (storeId: StoreId, f: Endo<CartItem>) => mapCart(storeId, ({ items, ...cart }) => {
-  const newItems = items.map(f)
+  const newItems = items.map(f).filter(hasAmount)
   return {
     ...cart,
     items: newItems,
     total: sumItems(newItems),
   }
 })
+
+const changeAmount = (state: State, { storeId, itemId , amount }: ChangeAmountPayload): State => mapItems(storeId, item => ({
+  ...item,
+  amount: itemId === item.id ? amount : item.amount,
+}))(state)
 
 export default createModel<RootModel>()({
   state: initialState,
@@ -82,22 +100,9 @@ export default createModel<RootModel>()({
         ...cart,
         nextId: nextId + 1 as CartItemId,
         items: newItems,
-        len: newItems.length,
-        total: sumItems(newItems),
       }
     })(state),
-    remove: (state, { storeId, itemId }: RemovePayload) => mapCart(storeId, ({ items, ...cart }) => {
-      const newItems = reject(whereEq({ id: itemId }), items)
-      return {
-        ...cart,
-        items: newItems,
-        len: newItems.length,
-        total: sumItems(newItems),
-      }
-    })(state),
-    changeAmount: (state, { storeId, itemId , amount }: ChangeAmountPayload) => mapItems(storeId, item => ({
-      ...item,
-      amount: itemId === item.id ? amount : item.amount,
-    }))(state),
+    remove: (state, payload: RemovePayload) => changeAmount(state, { amount: 0, ...payload }),
+    changeAmount,
   },
 })
