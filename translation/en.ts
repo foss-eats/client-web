@@ -11,17 +11,22 @@ export default identity<Translations>({
     store: {
       byId: {
         cart: {
-          title: ({ store }) => `Cart – ${store.name}`
+          title: ({ store }) => `Cart – ${store.name} | foss-eats`,
+          emptyCart: {
+            headline: `No items in cart`,
+            description: ({ store }) => `No items in cart for ${store.name}.`,
+            linkBody: ({ store }) => `Return to store ${store.name}`,
+          },
         },
         index: {
-          title: ({ store }) => `Menu – ${store.name}`,
+          title: ({ store }) => `Menu – ${store.name} | foss-eats`,
         }
       }
     },
     stores: {
       byPostalCode: {
         index: {
-          title: ({ postalCode }) => `Restaurants that deliver to postal code ${postalCode}`,
+          title: ({ postalCode }) => `Restaurants – in ${postalCode} | foss-eats`,
         }
       }
     }

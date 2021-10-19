@@ -8,7 +8,8 @@ import { useRouter } from "next/router"
 import { WithStoreId } from "models/cart"
 
 
-const CartAvatar: FC<WithStoreId> = ({ storeId }) => {
+export type Props = WithStoreId
+const CartAvatar: FC<Props> = ({ storeId }) => {
   const itemCount = useSelector(s => s.cart[storeId]?.len)
   return itemCount
     ? (

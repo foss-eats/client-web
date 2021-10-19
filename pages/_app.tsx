@@ -5,7 +5,8 @@ import React from "react"
 import "styles/global.css"
 import { store } from 'models'
 
-const App: React.FC<AppProps> = ({ Component, pageProps }) => (
+export type Props = AppProps
+const App: React.FC<Props> = ({ Component, pageProps }) => (
   <Provider {...{ store }}>
     <Component {...pageProps} />
   </Provider>

@@ -6,13 +6,13 @@ import { noop } from "lib/function"
 import styles from "./NumberInput.module.sass"
 
 
-export type NumberInputProps = {
+export type Props = {
   value: number,
   min?: number,
   max?: number,
   onChange?: (value: number) => void,
 }
-const NumberInput: FC<NumberInputProps> = ({ value, min = Number.NEGATIVE_INFINITY, max = Number.POSITIVE_INFINITY, onChange = noop }) => {
+const NumberInput: FC<Props> = ({ value, min = Number.NEGATIVE_INFINITY, max = Number.POSITIVE_INFINITY, onChange = noop }) => {
   const isMin = min >= value
   const isMax = value >= max
   return (

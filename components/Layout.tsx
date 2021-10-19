@@ -7,12 +7,12 @@ import AppBar from "components/AppBar"
 import Footer from "components/Footer"
 
 
-export type LayoutProps = {
+export type Props = {
   children: React.ReactNode,
   home?: boolean,
   fullscreen?: boolean,
 }
-const Layout: FC<LayoutProps> = ({ children, home }) => {
+const Layout: FC<Props> = ({ children, home }) => {
   return (<>
     <CssBaseline />
     <Head>

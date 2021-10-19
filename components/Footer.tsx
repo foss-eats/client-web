@@ -1,5 +1,8 @@
-import React from "react"
+import React, { FC } from "react"
+
+import { EmptyObject } from "lib/util"
 
 
-const Footer = () => (<></>)
+export type Props = EmptyObject
+const Footer: FC<Props> = () => (<></>)
 export default Footer

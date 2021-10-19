@@ -5,6 +5,7 @@ import { clientSide, EmptyObject } from "lib/util"
 
 
 const DEBOUNCE_TIME = 300
+const MAPS_SCRIPT_URL = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_API_KEY_GOOGLE_MAPS}&libraries=places`
 
 const services = {
   places: clientSide(() => {
@@ -24,16 +25,16 @@ export enum PlacesServiceStatus {
   UNKNOWN_ERROR = "UNKNOWN_ERROR",
   ZERO_RESULTS = "ZERO_RESULTS",
 }
-export type AutocompletionRequest = google.maps.places.AutocompletionRequest
+export type AutocompletionRequest  = google.maps.places.AutocompletionRequest
 export type AutocompletePrediction = google.maps.places.AutocompletePrediction
-export type PlaceDetailsRequest = google.maps.places.PlaceDetailsRequest
-export type PlaceResult = google.maps.places.PlaceResult
+export type PlaceDetailsRequest    = google.maps.places.PlaceDetailsRequest
+export type PlaceResult            = google.maps.places.PlaceResult
 
 type ServiceMethod<Req, Res> = (req: Req, callback: (res: Res | null, status: PlacesServiceStatus) => void) => void
 type ServiceMethodReq<S, M extends keyof S> = S[M] extends ServiceMethod<infer Req, unknown> ? Req : never
 type ServiceMethodRes<S, M extends keyof S> = S[M] extends ServiceMethod<unknown, infer Res> ? Res : never
 
-const callGoogleService = <S, M extends keyof S>(service: S | null, m: M, req: ServiceMethodReq<S, M>): Promise<ServiceMethodRes<S, M>> =>
+const callGoogleService = <S, M extends keyof S>(service: S | null, m: M, req: ServiceMethodReq<S, M>): Promise<ServiceMethodRes<S, M>> => 
   new Promise((resolve, reject) => {
     if (!service) {
       reject("google services not initialized.")
@@ -55,21 +56,22 @@ const callGoogleService = <S, M extends keyof S>(service: S | null, m: M, req: S
 export const GoogleMapsContext: FC<PropsWithChildren<EmptyObject>> = ({ children }) => (
   <>
     <Head>
-      <script async src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_API_KEY_GOOGLE_MAPS}&libraries=places`}></script>
+      <script async src={MAPS_SCRIPT_URL}/>
     </Head>
     {children}
   </>
 )
 
-type UseAutocomplete = [
+type UseAutocompleteResult = [
   google.maps.places.AutocompletePrediction[],
   (input: string) => void,
   boolean,
   () => void,
 ]
 type UseAutocompleteSettings = Omit<AutocompletionRequest, "input">
+type UseAutocomplete = (settings?: UseAutocompleteSettings) => UseAutocompleteResult
 
-export const useAutocomplete = (settings: UseAutocompleteSettings = {}): UseAutocomplete => {
+export const useAutocomplete: UseAutocomplete = (settings = {}) => {
   const [loading, setLoading] = useState(false)
   const [options, setOptions] = useState<AutocompletePrediction[]>([])
 

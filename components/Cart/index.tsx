@@ -1,6 +1,6 @@
 import React, { FC, PropsWithChildren } from "react"
 
-import { StoreProps } from "pages/store/[storeId]"
+import { Props as StoreProps } from "pages/store/[storeId]"
 import { Cart as CartData } from "models/cart"
 import CartTable from "./Table"
 
@@ -8,10 +8,10 @@ import CartTable from "./Table"
 export type Props = StoreProps & {
   cart: CartData,
 }
-const Cart: FC<Props> = ({ store, cart }) => {
+const Cart: FC<Props> = (props) => {
   return (<>
     <Section title="Cart">
-      <CartTable store={store} {...cart} />
+      <CartTable {...props} />
     </Section>
     <Section title="Delivery">
       

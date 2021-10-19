@@ -11,7 +11,12 @@ export default identity<Translations>({
     store: {
       byId: {
         cart: {
-          title: ({ store }) => `Einkaufskorb – ${store.name} | foss-eats`
+          title: ({ store }) => `Warenkorb – ${store.name} | foss-eats`,
+          emptyCart: {
+            headline: `Leerer Warenkorb`,
+            description: ({ store }) => `Dein Warenkorb für ${store.name} ist leer.`,
+            linkBody: ({ store }) => `Zurück zu ${store.name}`,
+          },
         },
         index: {
           title: ({ store }) => `Menü – ${store.name} | foss-eats`,
@@ -21,7 +26,7 @@ export default identity<Translations>({
     stores: {
       byPostalCode: {
         index: {
-          title: ({ postalCode }) => `Restaurants die in der PLZ ${postalCode} liefern`,
+          title: ({ postalCode }) => `Restaurants – in ${postalCode} | foss-eats`,
         }
       }
     }

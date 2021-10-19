@@ -6,11 +6,11 @@ import { useConfirmRemoveDialog } from "lib/confirmRemoveDialog"
 import NumberInput from "components/NumberInput"
 import { useDispatch } from "models"
 import { Cart as CartData, CartItem, WithStoreId } from "models/cart"
-import { StoreProps } from "pages/store/[storeId]"
+import { Props } from "./index"
 import styles from "./Table.module.sass"
 
 
-const CartTable: FC<CartData & StoreProps> = ({ items, total, store }) => {
+const CartTable: FC<Props> = ({ store, cart: { items, total } }) => {
   const [RemoveDialog, confirmRemove] = useConfirmRemoveDialog(store.id)
   const { changeAmount } = useDispatch().cart
   return (<>

@@ -10,9 +10,9 @@ import Layout from "components/Layout"
 import AddressSearch from "components/AddressSearch"
 
 
-export type Translations = PageTranslations<HomeProps>
-export type HomeProps = EmptyObject
-const Home: React.FC<HomeProps> = (props) => {
+export type Translations = PageTranslations<Props>
+export type Props = EmptyObject
+const Home: React.FC<Props> = (props) => {
   const translations = useTranslations().pages.index
   const router = useRouter()
   return (<>

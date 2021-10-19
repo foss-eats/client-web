@@ -6,10 +6,10 @@ import { GoogleMapsContext } from "lib/googleMaps"
 import { useAddressSearch } from "./hooks"
 
 
-export type AddressSearchProps = {
+export type Props = {
   onSubmit?: (postalCode: string) => void,
 }
-const AddressSearch: FC<AddressSearchProps> = ({ onSubmit }) => (
+const AddressSearch: FC<Props> = ({ onSubmit }) => (
   <GoogleMapsContext>
     <Autocomplete
       {...useAddressSearch(onSubmit)}

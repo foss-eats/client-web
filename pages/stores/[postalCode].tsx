@@ -18,13 +18,13 @@ import { useTranslations } from "models/i18n"
 import { PageTranslations } from "translation"
 
 
-export type Translations = PageTranslations<StoreProps>
+export type Translations = PageTranslations<Props>
 
-export type StoreProps = {
+export type Props = {
   postalCode?: string,
   stores?: StoreHeader[],
 }
-const Stores: FC<StoreProps> = (props) => {
+const Stores: FC<Props> = (props) => {
   const { stores, postalCode } = props
   const translations = useTranslations().pages.stores.byPostalCode.index
   return (<>
@@ -70,7 +70,7 @@ const StoreEntry: React.FC<StoreHeader & { divider: boolean }> = ({ name, id, di
 export interface StoreUrlParams extends ParsedUrlQuery {
   postalCode: string,
 }
-export const getServerSideProps: GetServerSideProps<StoreProps, StoreUrlParams> = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps<Props, StoreUrlParams> = async ({ params }) => {
   if (!params) return { props: {} }
   return {
     props: {
